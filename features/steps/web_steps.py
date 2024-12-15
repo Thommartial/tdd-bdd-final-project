@@ -25,13 +25,21 @@ For information on Waiting until elements are present in the HTML see:
     https://selenium-python.readthedocs.io/waits.html
 """
 import logging
-from behave import when, then
+from behave import given, when, then
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select, WebDriverWait
 from selenium.webdriver.support import expected_conditions
+from selenium import webdriver
+from selenium.webdriver.support import expected_conditions as EC
 
 ID_PREFIX = 'product_'
 
+def before_all(context):
+    context.driver = webdriver.Firefox()
+
+def after_all(context):
+    if hasattr(context, 'driver'):
+        context.driver.quit()
 
 @when('I visit the "Home Page"')
 def step_impl(context):
@@ -132,3 +140,4 @@ def step_impl(context, element_name, text_string):
     )
     element.clear()
     element.send_keys(text_string)
+
